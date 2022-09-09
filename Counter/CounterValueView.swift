@@ -17,9 +17,15 @@ struct CounterValueView: View {
         /// operated by view. It's simpler to hold it inside of view in simple cases (I prefer this
         /// option), and use coordinator in a more complicated scenarios. But it's not that
         /// important, so I'm using view model as an "intermediate storage" for callback
-        init(currentValue: UInt, lastChangDate: Date, onBackTapped: @escaping (Bool) -> Void) {
+        init(
+            currentValue: UInt,
+            lastChangDate: Date,
+            onBackTapped: @escaping (Bool) -> Void,
+            // Simple trick to test date-related things with a repeatable results
+            dateProvider: @escaping (() -> Date) = { Date() }
+        ) {
             self.currentValue = currentValue
-            self.timeSinceLastChange = Date().timeIntervalSince(lastChangDate)
+            self.timeSinceLastChange = dateProvider().timeIntervalSince(lastChangDate)
             self.onBackTapped = onBackTapped
         }
 
